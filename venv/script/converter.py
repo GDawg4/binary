@@ -1,5 +1,5 @@
 #
-#Script para covnertir binario a punto flotante
+#Script dummy para covnertir binario a punto flotante
 #Rodrigo Garoz
 #
 
@@ -16,21 +16,24 @@ def exponent():
         if x == 1:
             result = result + 2**current
         current = current + 1
-    return result - 15
+    return (result - 15)
 
 def fraction():
-    result = 1
-    current = 0
+    if(exponent() == 0):
+        result = 0
+    else:
+        result = 1
+
+    current2 = 1
     fracttion = numList[6:]
-    fracttion.reverse()
     for x in fracttion:
         if x == 1:
-            result = result + 2**-current
-        current = current + 1
-
+            result = result + 2**-current2
+        current2 = current2 + 1
     return result
 
-final = exponent() * fraction()
+
+final = 2**exponent() * fraction()
 
 if numList[0] == 1:
     print(final * -1)
