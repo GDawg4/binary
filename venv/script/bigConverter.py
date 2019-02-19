@@ -57,56 +57,70 @@ def findTheOne(integer, float):
     for x in float:
         if x == 1:
             return -(float.index(x))
+def isValid(input):
+    if input == "1" or input == "2":
+        return True
+    return False
 
 
 wantsToContinue = True
-binToFloat = False
 
 while wantsToContinue:
-    binaryNum = input("Ingrese el número que desea convertir")
-    try:
-        #binaryNum = int(binaryNum)
-        #binaryNum = 1101000001000000
-        numList = list(map(int, str(binaryNum)))
-    except:
-        print("No es válido")
-    else:
-        if binToFloat:
-            print("Válido")
-            finalResult = 2**exponent(numList)*fraction(numList)
-            if numList[0] == 1:
-                print(finalResult*-1)
+    print("Ingrese 1 para convertir de binario a flotante")
+    print("Ingrese 2 para convertir de flotante a binario")
+    direction = input("Ingrese 3 para salir")
+
+    if isValid(direction):
+        try:
+            binaryNum = input("Ingrese el número que desea convertir")
+            if direction == 1:
+                binaryNum = int(binaryNum)
+                numList = list(map(int, str(binaryNum)))
+
             else:
-                print(finalResult)
+                binaryNum = float(binaryNum)
+
+        except ValueError:
+            print("No es válido")
         else:
-            numToBinaryOG = 0.756
-            numToBinary = abs(numToBinaryOG)
-
-            integerToBinary = list(map(int, str(bin(int(abs(numToBinary))))[2:]))
-            print(integerToBinary)
-
-            pointToBinary = floatingToBinary(numToBinary)
-            print(pointToBinary)
-
-            correction = findTheOne(integerToBinary, pointToBinary)
-            print(correction)
-
-            if correction != 0:
-                finalExponent = list(map(int, str(bin(correction + 127))[2:]))
+            if direction == 1:
+                print("Válido")
+                finalResult = 2**exponent(numList)*fraction(numList)
+                if numList[0] == 1:
+                    print(finalResult*-1)
+                else:
+                    print(finalResult)
             else:
-                finalExponent = list(map(int, str(bin(correction + 126))[2:]))
-            print(finalExponent)
+                numToBinary = abs(binaryNum)
 
-            finalFraction = integerToBinary + pointToBinary
-            del finalFraction[0]
-            print(finalFraction)
+                integerToBinary = list(map(int, str(bin(int(abs(numToBinary))))[2:]))
 
-            if numToBinaryOG < 0:
-                signPrefix = [1]
-                finalNumber = signPrefix + finalExponent + finalFraction
-            else:
-                signPrefix = [0]
-                finalNumber = signPrefix + finalExponent + finalFraction
-            print(finalNumber)
+                pointToBinary = floatingToBinary(numToBinary)
+
+                correction = findTheOne(integerToBinary, pointToBinary)
+
+                if correction != 0:
+                    finalExponent = list(map(int, str(bin(correction + 127))[2:]))
+                else:
+                    finalExponent = list(map(int, str(bin(correction + 126))[2:]))
+
+                finalFraction = integerToBinary + pointToBinary
+                del finalFraction[0]
+
+                if binaryNum < 0:
+                    signPrefix = [1]
+                    finalNumber = signPrefix + finalExponent + finalFraction
+                else:
+                    signPrefix = [0]
+                    finalNumber = signPrefix + finalExponent + finalFraction
+
+                while len(finalNumber) < 16:
+                    finalNumber.append(0)
+
+                print("Su resultado final es", finalNumber)
+    elif direction == 3:
+        wantsToContinue = False
+    else:
+        print("Ingreso no válido, favor intentar nuevamente")
 
 
