@@ -28,17 +28,19 @@ def fraction(numList):
 def exponentToBinary(number):
     newNumber = int(number)
     binNumber = bin(newNumber)
-    return binNumber[3:]
+    binNumber = binNumber[3:]
+    while len(binNumber) < 8:
+        binNumber = "0" + binNumber
+    return binNumber
 
 def floatingToBinary(number):
-    newNumber = float(number)*-1
-    binNumber2 = (newNumber - int(number)*-1)
+    newNumber = float(number)
+    binNumber2 = (newNumber - int(number))
     finalNumber = [0]
 
-    while binNumber2 != 1.0 and binNumber2 != 0.0:
+    while (binNumber2 != 1.0 and binNumber2 != 0.0) and len(finalNumber) < 8:
         binNumber2 = binNumber2 * 2
         binBit = int(binNumber2)
-        print(binNumber2)
         if binBit == 1:
             binNumber2 = binNumber2 - 1
             finalNumber.append(1)
@@ -50,21 +52,21 @@ def floatingToBinary(number):
 def findTheOne(integer, float):
     for x in integer:
         if x == 1:
-            return 7 - integer.index(x)
+            return len(integer) - 1 - integer.index(x)
 
     for x in float:
         if x == 1:
-            return -integer.index(x)
+            return -(float.index(x))
 
 
 wantsToContinue = True
 binToFloat = False
 
 while wantsToContinue:
-    binaryNum = input("Ingrese el número que desea imprimir")
+    binaryNum = input("Ingrese el número que desea convertir")
     try:
         #binaryNum = int(binaryNum)
-        binaryNum = 1101000001000000
+        #binaryNum = 1101000001000000
         numList = list(map(int, str(binaryNum)))
     except:
         print("No es válido")
@@ -77,9 +79,34 @@ while wantsToContinue:
             else:
                 print(finalResult)
         else:
-            binList = list(map(int, str(exponentToBinary(-158.25))))
-            floatList = floatingToBinary(-158.25)
-            correction = findTheOne(binList, floatList)
-            
+            numToBinaryOG = 0.756
+            numToBinary = abs(numToBinaryOG)
+
+            integerToBinary = list(map(int, str(bin(int(abs(numToBinary))))[2:]))
+            print(integerToBinary)
+
+            pointToBinary = floatingToBinary(numToBinary)
+            print(pointToBinary)
+
+            correction = findTheOne(integerToBinary, pointToBinary)
+            print(correction)
+
+            if correction != 0:
+                finalExponent = list(map(int, str(bin(correction + 127))[2:]))
+            else:
+                finalExponent = list(map(int, str(bin(correction + 126))[2:]))
+            print(finalExponent)
+
+            finalFraction = integerToBinary + pointToBinary
+            del finalFraction[0]
+            print(finalFraction)
+
+            if numToBinaryOG < 0:
+                signPrefix = [1]
+                finalNumber = signPrefix + finalExponent + finalFraction
+            else:
+                signPrefix = [0]
+                finalNumber = signPrefix + finalExponent + finalFraction
+            print(finalNumber)
 
 
